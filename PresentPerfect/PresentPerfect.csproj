@@ -34,7 +34,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Kinect.Toolbox, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\KinectToolbox.1.2.1.1\lib\Kinect.Toolbox.dll</HintPath>
+    </Reference>
+    <Reference Include="Kinect.Toolbox.Voice, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\KinectToolbox.1.2.1.1\lib\Kinect.Toolbox.Voice.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Kinect, Version=1.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Kinect.Toolkit.FaceTracking">
+      <HintPath>..\packages\KinectToolbox.1.2.1.1\lib\Microsoft.Kinect.Toolkit.FaceTracking.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -54,6 +65,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Detector\PerfectPostureDetector.cs" />
+    <Compile Include="Monitor\SkeletonStreamMonitor.cs" />
+    <Compile Include="Posture\HelloPosture.cs" />
+    <Compile Include="Posture\HandsJoinedPosture.cs" />
+    <Compile Include="Posture\HandsOverHeadPosture.cs" />
+    <Compile Include="Posture\IPosture.cs" />
+    <Compile Include="Posture\SkeletonVector.cs" />
     <Compile Include="SensorManager.cs" />
     <Compile Include="Renderers\ColorStreamRenderer.cs" />
     <Page Include="PresentPerfectWindow.xaml">
@@ -87,6 +105,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -95,6 +114,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FaceTrackLib.dll" />
+    <Content Include="Kinect.Toolbox.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

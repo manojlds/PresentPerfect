@@ -4,6 +4,7 @@ using System.Windows.Controls;
 
 using Microsoft.Kinect;
 
+using PresentPerfect.Monitor;
 using PresentPerfect.Renderers;
 
 namespace PresentPerfect
@@ -17,6 +18,7 @@ namespace PresentPerfect
             sensor = FindSensor();
             try
             {
+                new SkeletonStreamMonitor(sensor).Start();
                 new ColorStreamRenderer(sensor).StartRendering(image);
             }
             catch (IOException)
