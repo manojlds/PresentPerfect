@@ -15,7 +15,7 @@ namespace PresentPerfect.Detector
 
         public PerfectPostureDetector() : base(AccumulatorTarget)
         {
-            Detected += RaisePostureDetected;
+            PostureDetected += TriggerEvent;
             postures = new List<IPosture>
                 {
                     new HandsJoinedPosture(), 
@@ -39,11 +39,19 @@ namespace PresentPerfect.Detector
             var skeletonVector = new SkeletonVector(skeleton.Joints);
             foreach (var posture in postures.Where(posture => posture.IsDetected(skeletonVector)))
             {
-                Detected(posture.Name);
+                RaisePostureDetected(posture.Name);
                 return;
             }
 
             Reset();
+        }
+
+        private void TriggerEvent(string eventName)
+        {
+            if (Detected != null && !string.IsNullOrEmpty(eventName))
+            {
+                Detected(eventName);
+            }
         }
     }
 }
