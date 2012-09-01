@@ -13,12 +13,12 @@ namespace PresentPerfect
     {
         private KinectSensor sensor;
 
-        public void Start(Image image, TextBlock statusBar)
+        public void Start(Image image, TextBlock statusBar, Canvas kinectCanvas)
         {
             sensor = FindSensor();
             try
             {
-                new SkeletonStreamMonitor(sensor).Start();
+                new SkeletonStreamMonitor(sensor).Start(kinectCanvas);
                 new ColorStreamRenderer(sensor).StartRendering(image);
             }
             catch (IOException)

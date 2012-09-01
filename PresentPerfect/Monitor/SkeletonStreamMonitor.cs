@@ -1,4 +1,8 @@
 using System;
+using System.Windows.Controls;
+
+using Kinect.Toolbox;
+
 using Microsoft.Kinect;
 using PresentPerfect.Detector;
 
@@ -8,18 +12,36 @@ namespace PresentPerfect.Monitor
     {
         private readonly KinectSensor sensor;
         private readonly PerfectPostureDetector perfectPostureDetector;
+        private readonly SwipeGestureDetector swipeGestureDetector;
+
+        private SkeletonDisplayManager skeletonDisplayManager;
 
         public SkeletonStreamMonitor(KinectSensor sensor)
         {
             this.sensor = sensor;
             perfectPostureDetector = new PerfectPostureDetector();
+            swipeGestureDetector = new SwipeGestureDetector();
         }
 
-        public void Start()
+        public void Start(Canvas kinectCanvas)
         {
-            sensor.SkeletonStream.Enable();
+            skeletonDisplayManager = new SkeletonDisplayManager(sensor, kinectCanvas);
+            sensor.SkeletonStream.Enable(new TransformSmoothParameters
+            {
+                Smoothing = 0.5f,
+                Correction = 0.5f,
+                Prediction = 0.5f,
+                JitterRadius = 0.05f,
+                MaxDeviationRadius = 0.04f
+            });
             sensor.SkeletonFrameReady += SensorOnSkeletonFrameReady;
             perfectPostureDetector.PostureDetected += PerfectPostureDetectorOnPostureDetected;
+            swipeGestureDetector.OnGestureDetected += SwipeGestureDetectorOnOnGestureDetected;
+        }
+
+        private void SwipeGestureDetectorOnOnGestureDetected(string gesture)
+        {
+            Console.WriteLine("{0} | {1}", DateTime.Now, gesture);
         }
 
         private static void PerfectPostureDetectorOnPostureDetected(string posture)
@@ -35,9 +57,21 @@ namespace PresentPerfect.Monitor
                 return;
             }
 
+            skeletonDisplayManager.Draw(skeletons, false);
             foreach (var skeleton in skeletons)
             {
                 perfectPostureDetector.TrackPostures(skeleton);
+               
+                foreach (Joint joint in skeleton.Joints)
+                {
+                    if (joint.TrackingState != JointTrackingState.Tracked)
+                        continue;
+
+                    if (joint.JointType == JointType.HandLeft)
+                    {
+                        swipeGestureDetector.Add(joint.Position, sensor);
+                    }
+                }
             }
         }
 
