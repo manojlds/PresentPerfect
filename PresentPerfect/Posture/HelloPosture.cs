@@ -5,7 +5,7 @@ namespace PresentPerfect.Posture
 {
     public class HelloPosture : IPosture
     {
-        const float MaxRange = 0.25f;
+        private const float MaxRange = 0.25f;
 
         public bool IsDetected(SkeletonVector skeletonVector)
         {

@@ -5,6 +5,7 @@ using Kinect.Toolbox.Record;
 using Microsoft.Kinect;
 using Microsoft.Win32;
 using PresentPerfect.Monitor;
+using PresentPerfect.Recorder;
 using PresentPerfect.Renderers;
 using PresentPerfect.Source;
 
@@ -12,7 +13,13 @@ namespace PresentPerfect
 {
     public class SensorManager
     {
+        private readonly SensorRecorder sensorRecorder;
         private KinectSensor kinectSensor;
+
+        public SensorManager(SensorRecorder sensorRecorder)
+        {
+            this.sensorRecorder = sensorRecorder;
+        }
 
         public void Start(Image image, TextBlock statusBar)
         {
@@ -36,7 +43,7 @@ namespace PresentPerfect
                 EnableSkeletonStream(kinectSensor);
                 EnableColourStream(kinectSensor);
                 kinectSensor.Start();
-                return new KinectSource(kinectSensor);
+                return new KinectSource(kinectSensor, sensorRecorder);
             }
 
             return RetrieveFromFileSource();

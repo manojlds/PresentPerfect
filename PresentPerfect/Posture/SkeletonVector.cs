@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-
 using Kinect.Toolbox;
-
 using Microsoft.Kinect;
 
 namespace PresentPerfect.Posture

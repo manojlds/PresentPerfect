@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Kinect.Toolbox.Record;
+using Microsoft.Kinect;
 using PresentPerfect.Detector;
 using PresentPerfect.Source;
 
@@ -43,6 +44,11 @@ namespace PresentPerfect.Monitor
                 return;
             }
 
+            PassSkeletonsToDetectors(skeletons);
+        }
+
+        private void PassSkeletonsToDetectors(IEnumerable<Skeleton> skeletons)
+        {
             foreach (var skeleton in skeletons)
             {
                 foreach (var detector in detectors)

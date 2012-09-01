@@ -5,7 +5,7 @@ namespace PresentPerfect.Posture
 {
     public class HandsOverHeadPosture : IPosture
     {
-        const float MaxRange = 0.25f;
+        private const float MaxRange = 0.25f;
 
         public bool IsDetected(SkeletonVector skeletonVector)
         {

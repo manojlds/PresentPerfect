@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-
 using Kinect.Toolbox;
-
 using Microsoft.Kinect;
 
 namespace PresentPerfect.Gesture

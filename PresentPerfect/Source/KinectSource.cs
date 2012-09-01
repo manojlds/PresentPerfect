@@ -2,10 +2,14 @@
 using Kinect.Toolbox.Record;
 using Microsoft.Kinect;
 
+using PresentPerfect.Recorder;
+
 namespace PresentPerfect.Source
 {
     public class KinectSource
     {
+        private readonly SensorRecorder sensorRecorder;
+
         private const int DefaultPixelDataLength = 1228800;
         private const int DefaultFrameWidth = 640;
         private const int DefaultFrameHeight = 480;
@@ -23,8 +27,9 @@ namespace PresentPerfect.Source
             FrameHeight = DefaultFrameHeight;
         }
 
-        public KinectSource(KinectSensor kinectSensor)
+        public KinectSource(KinectSensor kinectSensor, SensorRecorder sensorRecorder)
         {
+            this.sensorRecorder = sensorRecorder;
             kinectSensor.ColorFrameReady += SensorColorFrameReady;
             kinectSensor.SkeletonFrameReady += SensorSkeletonFrameReady;
             kinectSensor.DepthFrameReady += SensorDepthFrameReady;
@@ -34,9 +39,7 @@ namespace PresentPerfect.Source
         }
 
         public int FrameHeight { get; private set; }
-
         public int FrameWidth { get; private set; }
-
         public int FramePixelDataLength { get; private set; }
 
         private void SensorDepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
@@ -50,6 +53,7 @@ namespace PresentPerfect.Source
             {
                 if (frame != null)
                 {
+                    sensorRecorder.Record(frame);
                     DepthFrameReady(sender, frame);
                 }
             }
@@ -74,6 +78,7 @@ namespace PresentPerfect.Source
             {
                 if (frame != null)
                 {
+                    sensorRecorder.Record(frame);
                     SkeletonFrameReady(sender, frame);
                 }
             }
@@ -98,6 +103,7 @@ namespace PresentPerfect.Source
             {
                 if (frame != null)
                 {
+                    sensorRecorder.Record(frame);
                     ColorFrameReady(sender, frame);
                 }
             }
