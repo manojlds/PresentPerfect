@@ -66,7 +66,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Detector\IDetector.cs" />
+    <Compile Include="Detector\PerfectGestureDetector.cs" />
     <Compile Include="Detector\PerfectPostureDetector.cs" />
+    <Compile Include="Gesture\Gesture.cs" />
+    <Compile Include="Gesture\IGesture.cs" />
+    <Compile Include="Gesture\SwipeGesture.cs" />
     <Compile Include="Monitor\SkeletonStreamMonitor.cs" />
     <Compile Include="Posture\HelloPosture.cs" />
     <Compile Include="Posture\HandsJoinedPosture.cs" />
