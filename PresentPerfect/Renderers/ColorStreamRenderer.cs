@@ -1,60 +1,49 @@
 ﻿using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
+using Kinect.Toolbox.Record;
+
 using Microsoft.Kinect;
+
+using PresentPerfect.Source;
 
 namespace PresentPerfect.Renderers
 {
     public class ColorStreamRenderer
     {
-        private readonly KinectSensor kinectSensor;
-        private WriteableBitmap colorBitmap;
-        private byte[] colorPixelsFromCamera;
-        
-        public ColorStreamRenderer(KinectSensor kinectSensor)
+        private readonly KinectSource kinectSource;
+        private readonly WriteableBitmap colorBitmap;
+        private readonly byte[] colorPixelsFromCamera;
+
+        public ColorStreamRenderer(KinectSource kinectSource)
         {
-            this.kinectSensor = kinectSensor;
+            this.kinectSource = kinectSource;
+            colorPixelsFromCamera = new byte[kinectSource.FramePixelDataLength];
+            colorBitmap = new WriteableBitmap(kinectSource.FrameWidth, kinectSource.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
         }
 
-        public void StartRendering(System.Windows.Controls.Image image)
+        public void Start(Image image)
         {
-            if (kinectSensor == null)
-            {
-                throw new IOException("No sensor detected");
-            }
-
-            kinectSensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
-            colorPixelsFromCamera = new byte[kinectSensor.ColorStream.FramePixelDataLength];
-            colorBitmap = new WriteableBitmap(
-                kinectSensor.ColorStream.FrameWidth,
-                kinectSensor.ColorStream.FrameHeight,
-                96.0,
-                96.0,
-                PixelFormats.Bgr32,
-                null);
-
             image.Source = colorBitmap;
-            kinectSensor.ColorFrameReady += SensorColorFrameReady;
-            kinectSensor.Start();
+            kinectSource.ColorFrameReady += SensorColorFrameReady;
         }
 
-        private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        private void SensorColorFrameReady(object sender, ReplayColorImageFrame colorFrame)
         {
-            using (var colorFrame = e.OpenColorImageFrame())
+            if (colorFrame == null)
             {
-                if (colorFrame == null)
-                {
-                    return;
-                }
-
-                colorFrame.CopyPixelDataTo(colorPixelsFromCamera);
-                colorBitmap.WritePixels(
-                    new Int32Rect(0, 0, colorBitmap.PixelWidth, colorBitmap.PixelHeight),
-                    colorPixelsFromCamera,
-                    colorBitmap.PixelWidth * sizeof(int),
-                    0);
+                return;
             }
+
+            colorFrame.CopyPixelDataTo(colorPixelsFromCamera);
+            colorBitmap.WritePixels(
+                new Int32Rect(0, 0, colorBitmap.PixelWidth, colorBitmap.PixelHeight),
+                colorPixelsFromCamera,
+                colorBitmap.PixelWidth * sizeof(int),
+                0);
         }
     }
 }

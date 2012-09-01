@@ -14,7 +14,7 @@ namespace PresentPerfect
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            sensorManager.Start(Image, statusBarText, kinectCanvas);
+            sensorManager.Start(Image, statusBarText);
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
