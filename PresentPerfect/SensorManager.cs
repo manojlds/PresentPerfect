@@ -26,8 +26,9 @@ namespace PresentPerfect
             var kinectSource = DetermineKinectSource();
             try
             {
-                new SkeletonStreamMonitor(kinectSource).Start();
-                new ColorStreamRenderer(kinectSource).Start(image);
+                var colorStreamRenderer = new ColorStreamRenderer(kinectSource);
+                new SkeletonStreamMonitor(kinectSource, colorStreamRenderer).Start();
+                colorStreamRenderer.Start(image);
             }
             catch (IOException)
             {

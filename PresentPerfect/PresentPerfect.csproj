@@ -78,6 +78,7 @@
     <Compile Include="Posture\HandsOverHeadPosture.cs" />
     <Compile Include="Posture\IPosture.cs" />
     <Compile Include="Posture\SkeletonVector.cs" />
+    <Compile Include="Recorder\ColorScreenshotTaker.cs" />
     <Compile Include="Recorder\SensorRecorder.cs" />
     <Compile Include="SensorManager.cs" />
     <Compile Include="Renderers\ColorStreamRenderer.cs" />

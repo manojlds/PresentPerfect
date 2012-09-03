@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Kinect.Toolbox.Record;
 using Microsoft.Kinect;
 using PresentPerfect.Detector;
+using PresentPerfect.Recorder;
+using PresentPerfect.Renderers;
 using PresentPerfect.Source;
 
 namespace PresentPerfect.Monitor
@@ -10,11 +12,18 @@ namespace PresentPerfect.Monitor
     public class SkeletonStreamMonitor
     {
         private readonly KinectSource kinectSource;
+
+        private readonly ColorStreamRenderer colorStreamRenderer;
+
         private readonly IList<IDetector> detectors;
 
-        public SkeletonStreamMonitor(KinectSource kinectSource)
+        private readonly ColorScreenshotTaker colorScreenshotTaker;
+
+        public SkeletonStreamMonitor(KinectSource kinectSource, ColorStreamRenderer colorStreamRenderer)
         {
             this.kinectSource = kinectSource;
+            this.colorStreamRenderer = colorStreamRenderer;
+            colorScreenshotTaker = new ColorScreenshotTaker();
             detectors = new List<IDetector>
                 {
                     new PerfectPostureDetector(),
@@ -31,9 +40,11 @@ namespace PresentPerfect.Monitor
             }
         }
 
-        private static void EventDetected(string posture)
+        private void EventDetected(string posture)
         {
-            Console.WriteLine("{0} | {1}", DateTime.Now, posture);
+            var detectionTime = DateTime.Now;
+            colorScreenshotTaker.Capture(colorStreamRenderer.ColorBitmap,detectionTime, posture);
+            Console.WriteLine("{0} | {1}", detectionTime, posture);
         }
 
         private void KinectSourceOnSkeletonFrameReady(object sender, ReplaySkeletonFrame replaySkeletonFrame)

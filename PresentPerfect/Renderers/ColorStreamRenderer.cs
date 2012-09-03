@@ -1,13 +1,8 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 using Kinect.Toolbox.Record;
-
-using Microsoft.Kinect;
-
 using PresentPerfect.Source;
 
 namespace PresentPerfect.Renderers
@@ -15,19 +10,19 @@ namespace PresentPerfect.Renderers
     public class ColorStreamRenderer
     {
         private readonly KinectSource kinectSource;
-        private readonly WriteableBitmap colorBitmap;
+        public readonly WriteableBitmap ColorBitmap;
         private readonly byte[] colorPixelsFromCamera;
 
         public ColorStreamRenderer(KinectSource kinectSource)
         {
             this.kinectSource = kinectSource;
             colorPixelsFromCamera = new byte[kinectSource.FramePixelDataLength];
-            colorBitmap = new WriteableBitmap(kinectSource.FrameWidth, kinectSource.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
+            ColorBitmap = new WriteableBitmap(kinectSource.FrameWidth, kinectSource.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
         }
 
         public void Start(Image image)
         {
-            image.Source = colorBitmap;
+            image.Source = ColorBitmap;
             kinectSource.ColorFrameReady += SensorColorFrameReady;
         }
 
@@ -39,10 +34,10 @@ namespace PresentPerfect.Renderers
             }
 
             colorFrame.CopyPixelDataTo(colorPixelsFromCamera);
-            colorBitmap.WritePixels(
-                new Int32Rect(0, 0, colorBitmap.PixelWidth, colorBitmap.PixelHeight),
+            ColorBitmap.WritePixels(
+                new Int32Rect(0, 0, ColorBitmap.PixelWidth, ColorBitmap.PixelHeight),
                 colorPixelsFromCamera,
-                colorBitmap.PixelWidth * sizeof(int),
+                ColorBitmap.PixelWidth * sizeof(int),
                 0);
         }
     }
