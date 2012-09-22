@@ -1,9 +1,19 @@
-﻿<Window x:Class="PresentPerfect.PresentPerfectWindow"
+﻿<Controls:MetroWindow x:Class="PresentPerfect.PresentPerfectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="PresentPerfect" Height="735" Width="770" Loaded="WindowLoaded" Closing="WindowClosing">
     <Window.Resources>
-        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid Name="layoutGrid" Margin="10 0 10 0">
         <Grid.RowDefinitions>
@@ -12,9 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Margin="0 0 0 20">
-            <TextBlock DockPanel.Dock="Right" Margin="0 0 -1 0" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18">Present Perfect</TextBlock>
-        </DockPanel>
+        <DockPanel Grid.Row="0" Margin="0 0 0 20"/>
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center">
             <Grid Width="640" Height="480" ClipToBounds="True">
                 <Image Name="Image" Width="640" Height="480"/>
@@ -30,4 +38,4 @@
             </Grid>
         </StatusBar>
     </Grid>
-</Window>
+</Controls:MetroWindow>

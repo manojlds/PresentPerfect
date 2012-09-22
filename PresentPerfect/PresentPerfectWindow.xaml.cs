@@ -1,15 +1,15 @@
 ﻿using System.IO;
 using System.Windows;
-
+using System.Windows.Controls;
 using Kinect.Toolbox.Record;
-
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
 using PresentPerfect.Recorder;
 
 namespace PresentPerfect
 {
-    public partial class PresentPerfectWindow : Window
+    public partial class PresentPerfectWindow : MetroWindow
     {
         private readonly SensorManager sensorManager;
         private readonly SensorRecorder sensorRecorder;
