@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using Kinect.Toolbox.Record;
 using Microsoft.Kinect;
 using Microsoft.Win32;
+using PresentPerfect.Detector;
 using PresentPerfect.Monitor;
 using PresentPerfect.Recorder;
 using PresentPerfect.Renderers;
@@ -15,26 +17,37 @@ namespace PresentPerfect
     {
         private readonly SensorRecorder sensorRecorder;
         private KinectSensor kinectSensor;
+        private ColorStreamRenderer colorStreamRenderer;
 
         public SensorManager(SensorRecorder sensorRecorder)
         {
             this.sensorRecorder = sensorRecorder;
         }
 
-        public void Start(Image image, TextBlock statusBar)
+        public void Start(Image image)
         {
             var kinectSource = DetermineKinectSource();
             try
             {
-                var colorStreamRenderer = new ColorStreamRenderer(kinectSource);
-                new SkeletonStreamMonitor(kinectSource, colorStreamRenderer).Start();
+                colorStreamRenderer = new ColorStreamRenderer(kinectSource);
+                var skeletonStreamMonitor = new SkeletonStreamMonitor(kinectSource);
+                skeletonStreamMonitor.OnObservation += RaiseOnObservation; 
+                skeletonStreamMonitor.Start();
                 colorStreamRenderer.Start(image);
             }
             catch (IOException)
             {
-                statusBar.Text = "No Kinect source found";
+                Console.WriteLine("No Kinect source found");
             }
         }
+
+        public void RaiseOnObservation(ObservationEventArgs args)
+        {
+            args.Image = colorStreamRenderer.ColorBitmap;
+            OnObservation(args);
+        }
+
+        public event Action<ObservationEventArgs> OnObservation;
 
         private KinectSource DetermineKinectSource()
         {

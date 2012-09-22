@@ -17,8 +17,10 @@
             return true;
         }
 
-        public string Name 
-        { 
+        public bool IsPositive { get { return false; } }
+
+        public string Name
+        {
             get
             {
                 return "HandsJoined";

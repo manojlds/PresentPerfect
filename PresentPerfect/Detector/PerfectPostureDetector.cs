@@ -9,7 +9,7 @@ namespace PresentPerfect.Detector
 {
     public class PerfectPostureDetector : PostureDetector, IDetector
     {
-        public event Action<string> Detected;
+        public event Action<IObservation> Detected;
         private const int AccumulatorTarget = 10;
         private readonly IEnumerable<IPosture> postures;
 
@@ -31,10 +31,7 @@ namespace PresentPerfect.Detector
 
         public void Track(Skeleton skeleton)
         {
-            if (skeleton.TrackingState != SkeletonTrackingState.Tracked)
-            {
-                return;
-            }
+            if (skeleton.TrackingState != SkeletonTrackingState.Tracked) return;
 
             var skeletonVector = new SkeletonVector(skeleton.Joints);
             foreach (var posture in postures.Where(posture => posture.IsDetected(skeletonVector)))
@@ -48,10 +45,10 @@ namespace PresentPerfect.Detector
 
         private void TriggerEvent(string eventName)
         {
-            if (Detected != null && !string.IsNullOrEmpty(eventName))
-            {
-                Detected(eventName);
-            }
+            if (Detected == null || string.IsNullOrEmpty(eventName)) return;
+
+            var observation = postures.FirstOrDefault(posture => posture.Name == eventName);
+            Detected(observation);
         }
     }
 }

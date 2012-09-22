@@ -74,8 +74,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Detector\IDetector.cs" />
+    <Compile Include="Detector\IObservation.cs" />
+    <Compile Include="Detector\ObservationEventArgs.cs" />
     <Compile Include="Detector\PerfectGestureDetector.cs" />
     <Compile Include="Detector\PerfectPostureDetector.cs" />
+    <Compile Include="Evaluation.cs" />
     <Compile Include="Gesture\Gesture.cs" />
     <Compile Include="Gesture\IGesture.cs" />
     <Compile Include="Gesture\SwipeGesture.cs" />

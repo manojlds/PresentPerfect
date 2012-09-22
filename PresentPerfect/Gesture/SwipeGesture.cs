@@ -36,6 +36,11 @@ namespace PresentPerfect.Gesture
             return LookForGesture();
         }
 
+        public override bool IsPositive
+        {
+            get { return false; }
+        }
+
         private bool ScanPositions(Func<Vector3, Vector3, bool> heightFunction, Func<Vector3, Vector3, bool> directionFunction, 
             Func<Vector3, Vector3, bool> lengthFunction, int minTime, int maxTime)
         {

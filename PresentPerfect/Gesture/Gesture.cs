@@ -59,5 +59,6 @@ namespace PresentPerfect.Gesture
         }
 
         public abstract bool IsDetected(Skeleton skeleton);
+        public abstract bool IsPositive { get; }
     }
 }

@@ -24,6 +24,8 @@ namespace PresentPerfect.Posture
             return false;
         }
 
+        public bool IsPositive { get { return false; } }
+
         private static bool CheckHandOverHead(Vector3? headPosition, Vector3? handPosition)
         {
             if (!handPosition.HasValue || !headPosition.HasValue)

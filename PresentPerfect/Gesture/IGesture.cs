@@ -1,11 +1,11 @@
 ﻿using Microsoft.Kinect;
+using PresentPerfect.Detector;
 
 namespace PresentPerfect.Gesture
 {
-    public interface IGesture
+    public interface IGesture : IObservation
     {
         bool IsDetected(Skeleton skeleton);
-
-        string Name { get; }
+        
     }
 }

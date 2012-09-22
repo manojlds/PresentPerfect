@@ -7,8 +7,9 @@ namespace PresentPerfect.Recorder
 {
     class ColorScreenshotTaker
     {
-        public void Capture(WriteableBitmap colorBitmap, DateTime detectionTime, string posture)
+        public bool Capture(WriteableBitmap colorBitmap, DateTime detectionTime, string posture, out string filePath)
         {
+            filePath = null;
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(colorBitmap));
             var path = GetScreenshotPath(detectionTime, posture);
@@ -17,13 +18,14 @@ namespace PresentPerfect.Recorder
                 using (var fs = new FileStream(path, FileMode.Create))
                 {
                     encoder.Save(fs);
-                    Console.WriteLine("Screenshot captured and saved to {0}", path);
+                    filePath = path;
+                    return true;
                 }
 
             }
             catch (IOException)
             {
-                Console.WriteLine("Unable to take screenshot");
+                return false;
             }
         }
 

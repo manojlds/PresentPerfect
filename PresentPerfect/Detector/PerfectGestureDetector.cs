@@ -8,7 +8,7 @@ namespace PresentPerfect.Detector
 {
     public class PerfectGestureDetector : IDetector
     {
-        public event Action<string> Detected;
+        public event Action<IObservation> Detected;
         private readonly IEnumerable<IGesture> gestures;
 
         public PerfectGestureDetector()
@@ -26,7 +26,7 @@ namespace PresentPerfect.Detector
 
             foreach (var posture in gestures.Where(gesture => gesture.IsDetected(skeleton)))
             {
-                Detected(posture.Name);
+                Detected(posture);
                 return;
             }
         }

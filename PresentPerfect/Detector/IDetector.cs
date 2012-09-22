@@ -6,8 +6,7 @@ namespace PresentPerfect.Detector
 {
     public interface IDetector
     {
-        event Action<string> Detected;
-
+        event Action<IObservation> Detected;
         void Track(Skeleton skeleton);
     }
 }

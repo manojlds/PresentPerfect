@@ -1,9 +1,9 @@
-﻿namespace PresentPerfect.Posture
+﻿using PresentPerfect.Detector;
+
+namespace PresentPerfect.Posture
 {
-    public interface IPosture
+    public interface IPosture : IObservation
     {
         bool IsDetected(SkeletonVector skeletonVector);
-
-        string Name { get; }
     }
 }
