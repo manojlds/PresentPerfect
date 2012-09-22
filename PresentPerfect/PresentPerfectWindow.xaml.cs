@@ -89,7 +89,7 @@ namespace PresentPerfect
         private void SaveEvaluation()
         {
             var time = DateTime.Now.ToString("hh'-'mm'-'ss", CultureInfo.CurrentUICulture.DateTimeFormat);
-            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), string.Format("PresentPerfect-{0}.xml", time));
+            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), string.Format("PresentPerfect-{0}.ppe", time));
             var xmlSerializer = new XmlSerializer(typeof(List<Evaluation>));
             using (var fileStream = new FileStream(fileName, FileMode.Create))
             {
