@@ -84,6 +84,7 @@
     <Compile Include="Gesture\IGesture.cs" />
     <Compile Include="Gesture\SwipeGesture.cs" />
     <Compile Include="Monitor\SkeletonStreamMonitor.cs" />
+    <Compile Include="Posture\HandsNearHeadPosture.cs" />
     <Compile Include="Posture\HelloPosture.cs" />
     <Compile Include="Posture\HandsJoinedPosture.cs" />
     <Compile Include="Posture\HandsOverHeadPosture.cs" />

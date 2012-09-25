@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="PresentPerfect.Metro" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="PresentPerfect.Metro" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="PresentPerfect.Metro" Logo="images\logo_150_150.png" SmallLogo="images\logo_30_30.png" Description="PresentPerfect.Metro" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+        <SplashScreen Image="images\splash_screen.png" />
       </VisualElements>
       <Extensions>
         <Extension Category="windows.fileTypeAssociation">

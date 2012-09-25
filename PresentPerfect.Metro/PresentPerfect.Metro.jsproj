@@ -47,9 +47,7 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    
     <PackageCertificateKeyFile>PresentPerfect.Metro_TemporaryKey.pfx</PackageCertificateKeyFile>
-    
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -57,11 +55,16 @@
     </AppxManifest>
     <Content Include="css\default.css" />
     <Content Include="images\logo.png" />
+    <Content Include="images\logo_150_150.png" />
+    <Content Include="images\logo_30_30.png" />
+    <Content Include="images\logo_310_150.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
+    <Content Include="images\splash_screen.png" />
     <Content Include="images\storelogo.png" />
     <Content Include="js\data.js" />
     <Content Include="js\default.js" />
+    <Content Include="js\gesture_data.js" />
     <Content Include="js\navigator.js" />
     <Content Include="pages\items\items.css" />
     <Content Include="pages\items\items.html" />
@@ -70,9 +73,7 @@
     <Content Include="pages\split\split.html" />
     <Content Include="pages\split\split.js" />
     <Content Include="default.html" />
-    
     <None Include="PresentPerfect.Metro_TemporaryKey.pfx" />
-    
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.WinJS.1.0, Version=1.0" />

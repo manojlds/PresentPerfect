@@ -79,12 +79,17 @@
 
     function getValuationData(group, evaluation) {
         var gestureName = evaluation.selectSingleNode("Name").innerText;
+        return getGesture(gestureName, group, evaluation);
+    }
+    
+    function getGesture(gestureName, group, evaluation) {
+        var gesture = GestureData[gestureName];
         return {
+            title: gesture.title,
+            subtitle: gesture.subtitle,
+            description: gesture.description,
+            content: gesture.content,
             group: group,
-            title: gestureName,
-            subtitle: gestureName,
-            description: gestureName,
-            content: gestureName,
             backgroundImage: getImageFromString(evaluation.selectSingleNode("ImageBase64String").innerText)
         };
     }

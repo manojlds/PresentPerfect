@@ -19,8 +19,9 @@ namespace PresentPerfect.Detector
             postures = new List<IPosture>
                 {
                     new HandsJoinedPosture(), 
-                    new HandsOverHeadPosture(), 
-                    new HelloPosture()
+                    new HandsNearHeadPosture(),
+                    new HelloPosture(),
+                    new HandsOverHeadPosture() 
                 };
         }
 
