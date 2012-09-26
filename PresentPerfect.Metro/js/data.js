@@ -1,88 +1,79 @@
-﻿(function () {
-    "use strict";
-
-    var list = new WinJS.Binding.List();
-    var groupedItems = list.createGrouped(
-        function groupKeySelector(item) { return item.group.key; },
-        function groupDataSelector(item) { return item.group; }
-    );
-
-    loadEvaluations();
-
-    WinJS.Namespace.define("Data", {
-        items: groupedItems,
-        groups: groupedItems.groups,
-        getItemReference: getItemReference,
-        getItemsFromGroup: getItemsFromGroup,
-        resolveGroupReference: resolveGroupReference,
-        resolveItemReference: resolveItemReference
-    });
-
-    // Get a reference for an item, using the group key and item title as a
-    // unique reference to the item that can be easily serialized.
-    function getItemReference(item) {
+﻿var Evaluation = {
+    initalized: false,
+    init: function () {
+        if (this.initalized) return this.self;
+        this.self = this;
+        this.list = new WinJS.Binding.List();
+        this.groupedItems = this.list.createGrouped(
+            function groupKeySelector(item) { return item.group.key; },
+            function groupDataSelector(item) { return item.group; }
+        );
+        WinJS.Namespace.define("Data", {
+            items: this.self.groupedItems,
+            groups: this.self.groupedItems.groups,
+            getItemReference: this.self.getItemReference,
+            getItemsFromGroup: this.self.getItemsFromGroup.bind(this.self),
+            resolveGroupReference: this.self.resolveGroupReference.bind(this.self),
+            resolveItemReference: this.self.resolveItemReference
+        });
+        this.initalized = true;
+        return this.self;
+    },
+    getItemReference: function (item) {
         return [item.group.key, item.title];
-    }
-
-    // This function returns a WinJS.Binding.List containing only the items
-    // that belong to the provided group.
-    function getItemsFromGroup(group) {
-        return list.createFiltered(function (item) { return item.group.key === group.key; });
-    }
-
-    // Get the unique group corresponding to the provided group key.
-    function resolveGroupReference(key) {
-        for (var i = 0; i < groupedItems.groups.length; i++) {
-            if (groupedItems.groups.getAt(i).key === key) {
-                return groupedItems.groups.getAt(i);
+    },
+    getItemsFromGroup: function (group) {
+        return this.list.createFiltered(function (item) { return item.group.key === group.key; });
+    },
+    resolveGroupReference: function (key) {
+        for (var i = 0; i < this.groupedItems.groups.length; i++) {
+            if (this.groupedItems.groups.getAt(i).key === key) {
+                return this.groupedItems.groups.getAt(i);
             }
         }
-    }
-
-    // Get a unique item from the provided string array, which should contain a
-    // group key and an item title.
-    function resolveItemReference(reference) {
-        for (var i = 0; i < groupedItems.length; i++) {
-            var item = groupedItems.getAt(i);
+        return null;
+    },
+    resolveItemReference: function (reference) {
+        for (var i = 0; i < this.groupedItems.length; i++) {
+            var item = this.groupedItems.getAt(i);
             if (item.group.key === reference[0] && item.title === reference[1]) {
                 return item;
             }
         }
-    }
-
-    function loadEvaluations() {
+        return null;
+    },
+    loadEvaluations: function () {
         Windows.Storage.KnownFolders.documentsLibrary.getFilesAsync().then(function (files) {
-            return files.map(function (file) {
-                Windows.Data.Xml.Dom.XmlDocument.loadFromFileAsync(file).then(function (evaluations) {
-                    var evaluationGroup = {
-                        key: file.name,
-                        title: file.displayName,
-                        subtitle: file.displayName,
-                        backgroundImage: getEvaluationBackground(evaluations),
-                        description: file.displayName
-                    };
-                    return evaluations.selectNodes("//Evaluation").map(function (evaluation) {
-                        return getValuationData(evaluationGroup, evaluation);
-                    });
-                }).then(appendPageContent);
-            });
-        });
-    }
 
-    function getEvaluationBackground(evaluations) {
-        return getImageFromString(evaluations.selectSingleNode("//Evaluation[1]").selectSingleNode("ImageBase64String").innerText);
-    }
-
-    function getImageFromString(base64String) {
+            return files.map(this.loadContentFromFile.bind(this));
+        }.bind(this));
+    },
+    loadContentFromFile: function (file) {
+        Windows.Data.Xml.Dom.XmlDocument.loadFromFileAsync(file).then(function (evaluations) {
+            var evaluationGroup = {
+                key: file.name,
+                title: file.displayName,
+                subtitle: file.displayName,
+                backgroundImage: this.getEvaluationBackground(evaluations),
+                description: file.displayName
+            };
+            return evaluations.selectNodes("//Evaluation").map(function (evaluation) {
+                return this.getValuationData(evaluationGroup, evaluation);
+            }.bind(this));
+        }.bind(this)).then(this.appendPageContent.bind(this));
+    },
+    getEvaluationBackground: function (evaluations) {
+        return this.getImageFromString(evaluations.selectSingleNode("//Evaluation[1]").selectSingleNode("ImageBase64String").innerText);
+    },
+    getImageFromString: function (base64String) {
         return "data:image/png;base64," + base64String;
-    }
+    },
 
-    function getValuationData(group, evaluation) {
+    getValuationData: function (group, evaluation) {
         var gestureName = evaluation.selectSingleNode("Name").innerText;
-        return getGesture(gestureName, group, evaluation);
-    }
-    
-    function getGesture(gestureName, group, evaluation) {
+        return this.getGesture(gestureName, group, evaluation);
+    },
+    getGesture: function (gestureName, group, evaluation) {
         var gesture = GestureData[gestureName];
         return {
             title: gesture.title,
@@ -90,13 +81,18 @@
             description: gesture.description,
             content: gesture.content,
             group: group,
-            backgroundImage: getImageFromString(evaluation.selectSingleNode("ImageBase64String").innerText)
+            backgroundImage: this.getImageFromString(evaluation.selectSingleNode("ImageBase64String").innerText)
         };
-    }
-
-    function appendPageContent(evaluations) {
+    },
+    appendPageContent: function (evaluations) {
         evaluations.forEach(function (evaluation) {
-            list.push(evaluation);
-        });
+            this.list.push(evaluation);
+        }.bind(this));
     }
+};
+
+(function () {
+    "use strict";
+    Evaluation.init();
+    Evaluation.loadEvaluations();
 })();

@@ -95,7 +95,13 @@ namespace PresentPerfect
             using (var fileStream = new FileStream(fileName, FileMode.Create))
             {
                 xmlSerializer.Serialize(fileStream, perfectEvaluation.Values.ToList());
+                OpenEvaluationAsMetroApp(fileName);
             }
+        }
+
+        private void OpenEvaluationAsMetroApp(string fileName)
+        {
+            System.Diagnostics.Process.Start(fileName);
         }
     }
 }

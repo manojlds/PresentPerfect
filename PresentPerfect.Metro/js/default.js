@@ -10,6 +10,13 @@
     var nav = WinJS.Navigation;
 
     app.addEventListener("activated", function (args) {
+        if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
+            Windows.Storage.KnownFolders.documentsLibrary.getFileAsync(args.detail.files[0].name).then(function (file) {
+                var evaluation = Evaluation.init();
+                evaluation.loadContentFromFile(file);
+            });
+            //Evaluation.loadContentFromFile(fileName).bind(Evaluation);
+        }
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
